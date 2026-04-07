@@ -1,0 +1,115 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-bg-ambient {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.08) 0%, transparent 70%);
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  z-index: 10;
+  padding: 3rem 2.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -12px rgba(29, 53, 140, 0.15);
+}
+
+.back-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 2rem;
+  align-self: flex-start;
+  padding: 0.5rem 0.75rem;
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+}
+
+.auth-logo-wrap {
+  width: 72px; height: 72px;
+  margin: 0 auto 1.5rem;
+  border-radius: 18px;
+  background: rgba(29, 53, 140, 0.05);
+  border: 1px solid rgba(29, 53, 140, 0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.auth-title {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+.auth-sub {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.auth-input-icon {
+  position: absolute;
+  left: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+.input-field.pl-10 {
+  padding-left: 2.75rem;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem;
+}
+.btn-red { background: rgb(220, 38, 38); color: #fff; box-shadow: 0 0 15px rgba(220,38,38,0.4); }
+.btn-red:hover { box-shadow: 0 0 25px rgba(220,38,38,0.7); background: rgb(239, 68, 68); }
+
+.glass-error {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+.toggle-btn {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}

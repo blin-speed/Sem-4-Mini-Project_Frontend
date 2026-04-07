@@ -1,0 +1,296 @@
+import { useState, useEffect, useCallback } from 'react'
+import { fetchPublicSettings } from './hooks/useSettings'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+
+import Sidebar from './components/Sidebar'
+import Navbar from './components/Navbar'
+import ClientSidebar from './components/ClientSidebar'
+import ClientNavbar from './components/ClientNavbar'
+import GlobalBackgroundAnimation from './components/GlobalBackgroundAnimation'
+
+import Landing from './pages/Landing'
+import Auth from './pages/Auth'
+import SolutionDetail from './pages/SolutionDetail'
+import AboutUs from './pages/AboutUs'
+import VerifyEmail from './pages/VerifyEmail'
+import ScrollToTop from './components/ScrollToTop'
+
+// Admin pages
+import Dashboard from './pages/Dashboard'
+import Orders from './pages/Orders'
+import OrderCreate from './pages/OrderCreate'
+import OrderDetails from './pages/OrderDetails'
+import Requests from './pages/Requests'
+import RequestTranscript from './pages/RequestTranscript'
+import Clients from './pages/Clients'
+import AccountDetails from './pages/AccountDetails'
+import Inventory from './pages/Inventory'
+import Payments from './pages/Payments'
+import Archive from './pages/Archive'
+import AdminSettings from './pages/AdminSettings'
+
+// Client pages
+import ClientDashboard from './pages/ClientDashboard'
+import ClientProfile from './pages/ClientProfile'
+import ClientRequests from './pages/ClientRequests'
+import ClientOrders from './pages/ClientOrders'
+import AgentAuthIntro from './pages/AgentAuthIntro'
+import SignupFromChat from './pages/SignupFromChat'
+import OrderConfirm from './pages/OrderConfirm'
+import ClientRequestsIntro from './pages/ClientRequestsIntro'
+import ClientRequestsView from './pages/ClientRequestsView'
+import ClientRequestTypeSelect from './pages/ClientRequestTypeSelect'
+import ClientTranscriptPage from './pages/ClientTranscriptPage'
+import ClientDirectChat from './pages/ClientDirectChat'
+import ClientRequestChat from './pages/ClientRequestChat'
+import ClientRequestConfirm from './pages/ClientRequestConfirm'
+import ClientRequestAgentType from './pages/ClientRequestAgentType'
+import ClientRequestAgentConfirm from './pages/ClientRequestAgentConfirm'
+import ClientRequestManualType from './pages/ClientRequestManualType'
+import ClientRequestManualConfirm from './pages/ClientRequestManualConfirm'
+
+import './App.css'
+
+// ── Session helpers ────────────────────────────────────────────────────────
+const SESSION_DURATION = 8 * 60 * 60 * 1000  // 8 hours in ms
+
+const getSessionKey = (role) => `matrix_session_${role}`
+
+const readSession = (role) => {
+  if (!role) return null
+  try {
+    const raw = sessionStorage.getItem(getSessionKey(role))
+    if (!raw) return null
+    const { user, expiresAt } = JSON.parse(raw)
+    if (Date.now() > expiresAt) {
+      sessionStorage.removeItem(getSessionKey(role))
+      return null
+    }
+    return user
+  } catch {
+    sessionStorage.removeItem(getSessionKey(role))
+    return null
+  }
+}
+
+const writeSession = (userData) => {
+  sessionStorage.setItem(getSessionKey(userData.role), JSON.stringify({
+    user: userData,
+    expiresAt: Date.now() + SESSION_DURATION,
+  }))
+}
+
+const touchSession = (role) => {
+  if (!role) return
+  try {
+    const raw = sessionStorage.getItem(getSessionKey(role))
+    if (!raw) return
+    const session = JSON.parse(raw)
+    session.expiresAt = Date.now() + SESSION_DURATION
+    sessionStorage.setItem(getSessionKey(role), JSON.stringify(session))
+  } catch { }
+}
+
+const clearSession = (role) => {
+  if (role) sessionStorage.removeItem(getSessionKey(role))
+}
+
+// ── App ────────────────────────────────────────────────────────────────────
+function App() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [appSettings, setAppSettings] = useState({ catalogEnabled: false })
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchPublicSettings().then(s => setAppSettings(s)).catch(() => {})
+  }, [])
+
+  // Determine which role we care about based on the current URL
+  const currentContextRole = location.pathname.startsWith('/admin') ? 'admin' :
+    location.pathname.startsWith('/client') ? 'client' : null
+
+  // Load session on mount and when navigating between major role sections
+  useEffect(() => {
+    // If on landing, we check if ANY session exists, preferring one or the other.
+    if (!currentContextRole) {
+      const savedAdmin = readSession('admin')
+      if (savedAdmin) { setUser(savedAdmin); setLoading(false); return }
+      const savedClient = readSession('client')
+      if (savedClient) { setUser(savedClient); setLoading(false); return }
+      setUser(null)
+      setLoading(false)
+      return
+    }
+
+    const saved = readSession(currentContextRole)
+    setUser(saved || null)
+    setLoading(false)
+  }, [currentContextRole])
+
+  // Slide expiry window on any user interaction
+  useEffect(() => {
+    const refresh = () => { if (user) touchSession(user.role) }
+    const events = ['click', 'keydown', 'mousemove', 'scroll']
+    events.forEach((ev) => window.addEventListener(ev, refresh, { passive: true }))
+    return () => events.forEach((ev) => window.removeEventListener(ev, refresh))
+  }, [user])
+
+  const handleLogout = useCallback(() => {
+    clearSession('admin')
+    clearSession('client')
+    setUser(null)
+    navigate('/', { replace: true, state: { fromLogout: true } })
+  }, [navigate])
+
+  // When tab regains focus after sleep/background, re-validate session immediately
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === 'visible' && user) {
+        if (!readSession(user.role)) handleLogout()
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [user, handleLogout])
+
+  // Check expiry every minute — secondary safety net
+  useEffect(() => {
+    if (!user) return
+    const id = setInterval(() => {
+      if (!readSession(user.role)) handleLogout()
+    }, 60_000)
+    return () => clearInterval(id)
+  }, [user, handleLogout])
+
+  const handleLogin = (userData) => {
+    setUser(userData)
+    writeSession(userData)
+  }
+
+  if (loading) return null
+
+  // ── Landing & Public ──
+  if (location.pathname === '/' || location.pathname === '/about' || location.pathname.startsWith('/solution/')) {
+    if (user?.role === 'admin') return <Navigate to="/admin" replace />
+    if (user?.role === 'client') return <Navigate to="/client" replace />
+    return (
+      <>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Landing onLogin={handleLogin} />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/solution/:id" element={<SolutionDetail />} />
+        </Routes>
+      </>
+    )
+  }
+
+  // ── Auth pages ──
+  if (location.pathname === '/admin/login') {
+    if (user?.role === 'admin') return <Navigate to="/admin" replace />
+    return (
+      <>
+        <GlobalBackgroundAnimation />
+        <Auth mode="admin" onLogin={handleLogin} />
+      </>
+    )
+  }
+  if (location.pathname === '/client/login') {
+    if (user?.role === 'client') return <Navigate to="/client" replace />
+    return <AgentAuthIntro onLogin={handleLogin} />
+  }
+  if (location.pathname === '/client/signup') {
+    if (user?.role === 'client') return <Navigate to="/client" replace />
+    return <SignupFromChat onLogin={handleLogin} />
+  }
+
+  // ── Client pages that don't require authentication ──
+  if (location.pathname === '/client/signup-from-chat') {
+    return <SignupFromChat onLogin={handleLogin} />
+  }
+  if (location.pathname === '/client/agent-auth-intro') {
+    return <AgentAuthIntro onLogin={handleLogin} />
+  }
+  if (location.pathname === '/client/verify-email') {
+    return <VerifyEmail onLogin={handleLogin} />
+  }
+  if (location.pathname === '/client/order-confirm') {
+    return <OrderConfirm />
+  }
+
+  // ── Admin shell ──
+  if (location.pathname.startsWith('/admin')) {
+    if (!user || user.role !== 'admin') return <Navigate to="/admin/login" replace />
+    return (
+      <div className="admin-shell">
+        <Navbar user={user} />
+        <div className="admin-container">
+          <GlobalBackgroundAnimation />
+          <Sidebar user={user} onLogout={handleLogout} />
+          <main className="content">
+            <Routes>
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/orders" element={<Orders />} />
+              <Route path="/admin/orders/new" element={<OrderCreate />} />
+              <Route path="/admin/orders/:orderId" element={<OrderDetails />} />
+              <Route path="/admin/requests" element={<Requests user={user} />} />
+              <Route path="/admin/requests/chat" element={<RequestTranscript user={user} />} />
+              <Route path="/admin/clients" element={<Clients />} />
+              <Route path="/admin/clients/:clientNo" element={<AccountDetails />} />
+              {appSettings.catalogEnabled && <Route path="/admin/inventory" element={<Inventory />} />}
+              <Route path="/admin/payments" element={<Payments />} />
+              <Route path="/admin/archive" element={<Archive />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+              <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Client shell ──
+  if (location.pathname.startsWith('/client')) {
+    if (!user || user.role !== 'client') return <Navigate to="/client/login" replace />
+    return (
+      <div className="admin-shell">
+        <ClientNavbar user={user} />
+        <div className="admin-container">
+          <GlobalBackgroundAnimation />
+          <ClientSidebar user={user} onLogout={handleLogout} />
+          <main className="content">
+            <Routes>
+              <Route path="/client" element={<ClientDashboard user={user} />} />
+              <Route path="/client/profile" element={<ClientProfile user={user} />} />
+              <Route path="/client/requests-intro" element={<ClientRequestsIntro user={user} />} />
+              <Route path="/client/direct-chat" element={<ClientDirectChat user={user} />} />
+              <Route path="/client/requests/type" element={<ClientRequestTypeSelect user={user} />} />
+              <Route path="/client/requests/confirm" element={<ClientRequestConfirm user={user} />} />
+              {/* Agent Flow - Independent routing */}
+              <Route path="/client/requests/agent/type" element={<ClientRequestAgentType user={user} />} />
+              <Route path="/client/requests/agent/confirm" element={<ClientRequestAgentConfirm user={user} />} />
+              <Route path="/client/requests/agent/chat/:requestId" element={<ClientRequestChat user={user} />} />
+              {/* Manual Flow - Independent routing */}
+              <Route path="/client/requests/manual/type" element={<ClientRequestManualType user={user} />} />
+              <Route path="/client/requests/manual/confirm" element={<ClientRequestManualConfirm user={user} />} />
+              {/* Shared routes */}
+              <Route path="/client/requests" element={<ClientRequests user={user} />} />
+              <Route path="/client/requests/view" element={<ClientRequestsView user={user} />} />
+              <Route path="/client/requests/chat/:requestId" element={<ClientRequestChat user={user} />} />
+              <Route path="/client/requests/:requestId/transcript" element={<ClientTranscriptPage user={user} />} />
+              <Route path="/client/orders" element={<ClientOrders user={user} />} />
+              <Route path="/client/order-confirm" element={<OrderConfirm user={user} />} />
+              <Route path="/client/*" element={<Navigate to="/client" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    )
+  }
+
+  return <Navigate to="/" replace />
+}
+
+export default App

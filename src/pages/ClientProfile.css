@@ -1,0 +1,36 @@
+.cp-page { display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem; max-width: 1000px; margin: 0 auto; width: 100%; }
+.cp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+.cp-header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+
+.cp-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 1rem; border-radius: 8px; font-size: 0.9rem; text-align: center; }
+
+.cp-identity { display: flex; align-items: center; gap: 1.5rem; padding: 2rem; background: linear-gradient(135deg, #fff, hsl(var(--primary) / 0.05)); border: 1px solid hsl(var(--border)); border-left: 4px solid hsl(var(--primary)); position: relative; overflow: hidden; }
+.cp-identity::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at right, hsl(var(--primary)/0.1) 0%, transparent 60%); pointer-events: none; }
+
+.cp-avatar { width: 80px; height: 80px; border-radius: 20px; background: hsl(var(--primary)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; font-family: 'Outfit'; z-index: 1; }
+.cp-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+.cp-company { font-size: 0.9rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.5rem; opacity: 0.8; }
+.cp-badge { font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; }
+.active-badge { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+.pending-badge { background: rgba(250, 204, 21, 0.1); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+
+.cp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 768px) { .cp-grid { grid-template-columns: 1fr; } }
+
+.cp-section { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.cp-section-title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid hsl(var(--border)); padding-bottom: 0.75rem; }
+
+.cp-field { display: flex; align-items: center; gap: 1rem; }
+.cp-field-icon { width: 36px; height: 36px; border-radius: 8px; background: hsl(var(--muted)); color: hsl(var(--primary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid hsl(var(--border)); }
+.cp-field-body { flex: 1; display: flex; flex-direction: column; }
+.cp-field-body label { font-size: 0.65rem; color: hsl(var(--muted-foreground)); font-weight: 600; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+.cp-field-val { font-size: 0.9rem; color: hsl(var(--foreground)); line-height: 1.4; }
+.cp-input:focus { border-color: hsl(var(--primary)/0.6); }
+
+.cp-read-only-note { font-size: 0.65rem; color: hsl(var(--muted-foreground)); margin-top: 0.25rem; font-style: italic; }
+
+.cp-account-row { display: flex; align-items: stretch; gap: 1.5rem; }
+.cp-account-item { display: flex; flex-direction: column; align-items: center; }
+.cp-account-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+.cp-account-val { font-size: 0.9rem; color: hsl(var(--foreground)); font-weight: 600; }

@@ -1,0 +1,37 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Content pushed right by the collapsed sidebar width */
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-left: 64px;
+  min-width: 0;
+  background: transparent;
+}
+
+.content {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.input-field {
+  width: 100%;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.client-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  margin-left: 64px;
+  min-width: 0;
+  background: transparent;
+}
