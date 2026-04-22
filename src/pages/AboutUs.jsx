@@ -1,118 +1,269 @@
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { ChevronDown, Users, Target, Eye, ArrowRight } from 'lucide-react'
-import './Landing.css' // Reuse landing page styles for consistency
+import { Target, Eye, ShieldCheck, Zap, Users, TrendingUp, Award, Globe } from 'lucide-react'
+import './Landing.css'
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.65, ease: 'easeOut', delay },
+})
 
 const AboutUs = () => {
-  const navigate = useNavigate()
+  const stats = [
+    { value: '30+', label: 'Years of Excellence' },
+    { value: '500+', label: 'Enterprise Clients' },
+    { value: '1000+', label: 'Projects Delivered' },
+    { value: '98%', label: 'Client Retention Rate' },
+  ]
+
+  const values = [
+    {
+      icon: ShieldCheck,
+      title: 'Financial Credibility',
+      desc: 'We uphold the highest standards of fiscal integrity and transparent business conduct, ensuring long-term partnership reliability for every client and stakeholder.',
+      color: '#38bdf8',
+    },
+    {
+      icon: Zap,
+      title: 'Technical Excellence',
+      desc: 'Our in-house engineers and solution architects bring specialised expertise across datacenters, cybersecurity, and endpoint management — always at the cutting edge.',
+      color: '#818cf8',
+    },
+    {
+      icon: Users,
+      title: 'Client-First Philosophy',
+      desc: 'From our dedicated Customer Information Centre to on-site engineering support, every touchpoint is designed around delivering seamless, measurable value.',
+      color: '#34d399',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Market-Leading Growth',
+      desc: 'We are not just keeping pace with the global technology landscape — we are setting the benchmark for IT distribution and project marketing in India.',
+      color: '#fb923c',
+    },
+    {
+      icon: Award,
+      title: 'Trusted Alliances',
+      desc: 'Decades of partnership with world-class technology brands have given us the credibility and clout to deliver image-building consultancy at the highest level.',
+      color: '#f472b6',
+    },
+    {
+      icon: Globe,
+      title: 'Expanding Influence',
+      desc: 'From core IT distribution to sophisticated infrastructure integration, Matrix Solutions continues to evolve its portfolio to meet tomorrow\'s enterprise challenges.',
+      color: '#a78bfa',
+    },
+  ]
 
   return (
-    <div className="about-page" style={{ background: '#fff' }}>
-      <header className="lp-nav glass" style={{ position: 'fixed', width: '100%', zIndex: 100, borderBottom: '1px solid rgba(0,0,0,0.05)', background: '#fff' }}>
+    <div style={{ background: '#fff', fontFamily: "'Inter', 'Outfit', sans-serif" }}>
+
+      {/* ─── Navbar ─── */}
+      <header className="lp-nav glass" style={{ position: 'fixed', width: '100%', zIndex: 100, borderBottom: '1px solid rgba(0,0,0,0.06)', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)' }}>
         <div className="lp-nav-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
           <div className="lp-brand" style={{ display: 'flex', alignItems: 'center', paddingTop: '10px' }}>
             <img src="/logo.jfif" alt="Matrix Solutions" style={{ height: '55px', objectFit: 'contain' }} />
           </div>
-          
           <nav className="lp-nav-links" style={{ display: 'flex', gap: '2rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             <a href="/" style={{ color: '#475569', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Home</a>
             <a href="/#services" style={{ color: '#475569', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Services</a>
-            <a href="/about" style={{ color: '#0f172a', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>About Us</a>
+            <a href="/about" style={{ color: '#1a358c', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>About Us</a>
           </nav>
-
           <div className="lp-nav-cta">
-            <a href="/#contact" className="btn btn-primary" style={{ padding: '0.6rem 1.8rem', color: '#fff', fontWeight: 700, fontSize: '0.85rem', borderRadius: '50px', backgroundColor: '#1d358c', boxShadow: '0 4px 15px rgba(29, 53, 140, 0.25)', textDecoration: 'none' }}>Get Started</a>
+            <a href="/#contact" className="btn btn-primary" style={{ padding: '0.6rem 1.8rem', color: '#fff', fontWeight: 700, fontSize: '0.85rem', borderRadius: '50px', backgroundColor: '#1d358c', boxShadow: '0 4px 15px rgba(29,53,140,0.25)', textDecoration: 'none' }}>Get Started</a>
           </div>
         </div>
       </header>
 
-      <section className="about-hero" style={{ padding: '10rem 5% 6rem', background: '#f8fafc', textAlign: 'center' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <p style={{ color: '#1a358c', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.85rem', marginBottom: '1rem' }}>OUR STORY</p>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '1.5rem' }}>Empowering Business Through <span style={{ color: '#1a358c' }}>Technology</span></h1>
-          <p style={{ fontSize: '1.2rem', color: '#64748b', maxWidth: '800px', margin: '0 auto', lineHeight: 1.6 }}>
-            Since 1996, Matrix Solutions has been at the forefront of IT infrastructure, delivering reliable and innovative solutions to organizations worldwide.
+      {/* ─── Hero ─── */}
+      <section style={{
+        paddingTop: '11rem', paddingBottom: '7rem', paddingLeft: '5%', paddingRight: '5%',
+        background: 'linear-gradient(160deg, #f0f4ff 0%, #f8fafc 60%, #e8f0ff 100%)',
+        textAlign: 'center', position: 'relative', overflow: 'hidden',
+      }}>
+        {/* Decorative orb */}
+        <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(26,53,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '380px', height: '380px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <motion.div {...fadeUp()}>
+          <p style={{ color: '#1a358c', fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '0.82rem', marginBottom: '1.25rem', display: 'inline-block', background: 'rgba(26,53,140,0.08)', padding: '0.3rem 1rem', borderRadius: '50px', border: '1px solid rgba(26,53,140,0.15)' }}>
+            About Matrix Solutions
+          </p>
+          <h1 style={{ fontSize: 'clamp(2.8rem, 5vw, 4rem)', fontWeight: 900, color: '#0f172a', margin: '0 auto 1.5rem', lineHeight: 1.15, maxWidth: '820px', letterSpacing: '-0.02em' }}>
+            Empowering Enterprise Through{' '}
+            <span style={{ color: '#1a358c', position: 'relative' }}>High-Performance IT</span>
+          </h1>
+          <p style={{ fontSize: '1.15rem', color: '#64748b', maxWidth: '680px', margin: '0 auto', lineHeight: 1.75 }}>
+            For over three decades, Matrix Solutions has delivered world-class IT infrastructure, networking, and security solutions to India's most demanding corporate and institutional clients.
           </p>
         </motion.div>
       </section>
 
-      <section className="about-content" style={{ padding: '6rem 5%' }}>
+      {/* ─── Stats Strip ─── */}
+      <section style={{ background: '#1a358c', padding: '3.5rem 5%' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', textAlign: 'center' }}>
+          {stats.map((s, i) => (
+            <motion.div key={i} {...fadeUp(i * 0.08)}>
+              <p style={{ fontSize: '2.8rem', fontWeight: 900, color: '#fff', marginBottom: '0.3rem', lineHeight: 1 }}>{s.value}</p>
+              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Mission ─── */}
+      <section style={{ padding: '7rem 5%', background: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+          <motion.div {...fadeUp()}>
+            <p style={{ color: '#1a358c', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '1rem' }}>Our Mission</p>
+            <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.75rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+              Infrastructure That Powers India's Enterprises
+            </h2>
+            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
+              To empower corporate and institutional clients with <strong style={{ color: '#0f172a' }}>high-performance IT infrastructure</strong> through a robust portfolio of computing, networking, and security solutions.
+            </p>
+            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85 }}>
+              We leverage over <strong style={{ color: '#0f172a' }}>30 years of operational excellence</strong> to provide seamless technology integration, backed by a dedicated Customer Information Centre and specialised on-site engineering support — maintaining the highest standards of financial credibility while delivering consistent value to every partner and client.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.93 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
+            style={{ position: 'relative' }}
+          >
+            <div style={{ background: 'linear-gradient(145deg, #eef2ff, #e0e7ff)', borderRadius: '28px', height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(26,53,140,0.1)', boxShadow: '0 20px 60px rgba(26,53,140,0.08)' }}>
+              <Target size={130} color="#1a358c" opacity={0.18} strokeWidth={1.2} />
+            </div>
+            {/* Floating badge */}
+            <div style={{ position: 'absolute', bottom: '-20px', left: '2rem', background: '#fff', borderRadius: '14px', padding: '1rem 1.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid rgba(26,53,140,0.12)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: 42, height: 42, background: 'linear-gradient(135deg, #1a358c, #4c6ef5)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldCheck size={22} color="#fff" />
+              </div>
+              <div>
+                <p style={{ fontWeight: 800, fontSize: '1rem', color: '#0f172a', lineHeight: 1 }}>ISO Certified</p>
+                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Internationally recognised standards</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── Vision ─── */}
+      <section style={{ padding: '7rem 5%', background: '#f8fafc' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.93 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
+            style={{ position: 'relative', order: 1 }}
+          >
+            <div style={{ background: 'linear-gradient(145deg, #f0fdf4, #dcfce7)', borderRadius: '28px', height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(52,211,153,0.2)', boxShadow: '0 20px 60px rgba(52,211,153,0.08)' }}>
+              <Eye size={130} color="#059669" opacity={0.18} strokeWidth={1.2} />
+            </div>
+            {/* Floating badge */}
+            <div style={{ position: 'absolute', bottom: '-20px', right: '2rem', background: '#fff', borderRadius: '14px', padding: '1rem 1.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid rgba(52,211,153,0.2)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: 42, height: 42, background: 'linear-gradient(135deg, #059669, #34d399)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Globe size={22} color="#fff" />
+              </div>
+              <div>
+                <p style={{ fontWeight: 800, fontSize: '1rem', color: '#0f172a', lineHeight: 1 }}>Pan-India Reach</p>
+                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Serving clients across every major city</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div {...fadeUp(0.1)} style={{ order: 2 }}>
+            <p style={{ color: '#059669', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '1rem' }}>Our Vision</p>
+            <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.75rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+              India's Most Trusted, Financially Independent IT Partner
+            </h2>
+            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
+              To be the <strong style={{ color: '#0f172a' }}>most trusted and financially independent IT solutions provider in India</strong>, setting the benchmark for market-leading growth and technical expertise across all domains.
+            </p>
+            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85 }}>
+              We aim to evolve alongside the global technology landscape — expanding our influence from core IT distribution to <strong style={{ color: '#0f172a' }}>sophisticated project marketing and image-building consultancy</strong> for world-class brands, while never compromising on the integrity and quality that define us.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── Core Values ─── */}
+      <section style={{ padding: '8rem 5%', background: '#0f172a', color: '#fff' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', marginBottom: '6rem' }}>
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '1.5rem' }}>Our Mission</h2>
-              <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
-              <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, marginTop: '1rem' }}>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-              </p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} style={{ background: '#f1f5f9', borderRadius: '24px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Target size={120} color="#1a358c" opacity={0.2} />
-            </motion.div>
-          </div>
+          <motion.div {...fadeUp()} style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <p style={{ color: '#38bdf8', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '1rem' }}>What Drives Us</p>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.02em' }}>Our Core Values</h2>
+            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
+              These principles have guided Matrix Solutions for over three decades and continue to shape every decision we make.
+            </p>
+          </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} style={{ background: '#f1f5f9', borderRadius: '24px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', order: 2 }}>
-              <Eye size={120} color="#1a358c" opacity={0.2} />
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ order: 1 }}>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '1.5rem' }}>Our Vision</h2>
-              <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-              </p>
-              <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, marginTop: '1rem' }}>
-                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-              </p>
-            </motion.div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+            {values.map((v, i) => {
+              const Icon = v.icon
+              return (
+                <motion.div key={i} {...fadeUp(i * 0.07)}
+                  style={{ padding: '2.25rem', background: 'rgba(255,255,255,0.04)', borderRadius: '18px', border: '1px solid rgba(255,255,255,0.07)', transition: 'all 0.2s' }}
+                  whileHover={{ background: 'rgba(255,255,255,0.07)', y: -4 }}
+                >
+                  <div style={{ width: 48, height: 48, borderRadius: '12px', background: `${v.color}18`, border: `1px solid ${v.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+                    <Icon size={22} color={v.color} />
+                  </div>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.75rem', color: v.color }}>{v.title}</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, fontSize: '0.9rem' }}>{v.desc}</p>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      <section className="about-values" style={{ padding: '8rem 5%', background: '#0f172a', color: '#fff' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '4rem' }}>Our Core Values</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
-            {[
-              { title: 'Integrity', desc: 'We conduct our business with the highest level of ethics and transparency.' },
-              { title: 'Innovation', desc: 'We constantly push the boundaries of what technology can achieve for our clients.' },
-              { title: 'Customer First', desc: 'Your success is our primary metric for performance and growth.' }
-            ].map((value, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                style={{ padding: '3rem', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: '#38bdf8' }}>{value.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>{value.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+      {/* ─── CTA Banner ─── */}
+      <section style={{ padding: '6rem 5%', background: 'linear-gradient(135deg, #1a358c 0%, #2d4fcf 100%)', textAlign: 'center', color: '#fff' }}>
+        <motion.div {...fadeUp()}>
+          <h2 style={{ fontSize: '2.8rem', fontWeight: 900, marginBottom: '1.25rem', letterSpacing: '-0.02em' }}>Ready to Partner With Us?</h2>
+          <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.75)', maxWidth: '520px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
+            Let's discuss how Matrix Solutions can transform your IT infrastructure and drive real business outcomes.
+          </p>
+          <a href="/#contact" style={{ display: 'inline-block', background: '#fff', color: '#1a358c', fontWeight: 800, fontSize: '0.95rem', padding: '0.9rem 2.5rem', borderRadius: '50px', textDecoration: 'none', boxShadow: '0 8px 30px rgba(0,0,0,0.2)', letterSpacing: '0.03em' }}>
+            Get in Touch →
+          </a>
+        </motion.div>
       </section>
 
-      <footer id="footer" style={{ background: '#0f172a', color: '#fff', padding: '5rem 5% 2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1.2fr', gap: '4rem' }}>
-          <div style={{ background: 'rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center' }}>
-            <img src="/logo.jfif" alt="Matrix" style={{ height: '70px', marginBottom: '1.5rem' }} />
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>Delivering IT infrastructure since 1996.</p>
+      {/* ─── Footer ─── */}
+      <footer style={{ background: '#0a0f1e', color: '#fff', padding: '4rem 5% 2rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.8fr 1fr 1fr 1fr', gap: '3rem', marginBottom: '3rem' }}>
+          <div>
+            <img src="/logo.jfif" alt="Matrix Solutions" style={{ height: '60px', marginBottom: '1.25rem', borderRadius: '8px' }} />
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', lineHeight: 1.75, maxWidth: '260px' }}>
+              Delivering high-performance IT infrastructure to India's leading enterprises since 1996.
+            </p>
           </div>
           <div>
-            <h4>Solutions</h4>
-            <ul style={{ listStyle: 'none', padding: 0, color: 'rgba(255,255,255,0.6)' }}>
-              <li>Datacenter</li><li>Cybersecurity</li><li>Managed IT</li>
+            <h4 style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>Solutions</h4>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {['Datacenter', 'Cybersecurity', 'Networking', 'Managed IT'].map(s => (
+                <li key={s}><a href="/#services" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: '0.88rem' }}>{s}</a></li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4>Company</h4>
-            <ul style={{ listStyle: 'none', padding: 0, color: 'rgba(255,255,255,0.6)' }}>
-              <li><a href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>About Us</a></li><li><a href="/#services" style={{ color: 'inherit', textDecoration: 'none' }}>Services</a></li><li>Alliances</li>
+            <h4 style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>Company</h4>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {[{ label: 'About Us', href: '/about' }, { label: 'Services', href: '/#services' }, { label: 'Alliances', href: '/' }].map(l => (
+                <li key={l.label}><a href={l.href} style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: '0.88rem' }}>{l.label}</a></li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4>Contact</h4>
-            <p style={{ color: 'rgba(255,255,255,0.6)' }}>Mumbai, India</p>
+            <h4 style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>Contact</h4>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.88rem', lineHeight: 1.7 }}>Mumbai, India</p>
+            <a href="/#contact" style={{ display: 'inline-block', marginTop: '1rem', background: 'rgba(255,255,255,0.08)', color: '#fff', fontSize: '0.82rem', fontWeight: 700, padding: '0.5rem 1.2rem', borderRadius: '50px', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.12)' }}>Get in Touch</a>
           </div>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '4rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>© 2026 Matrix Solutions Pvt. Ltd. All rights reserved.</div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1.75rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>
+          © 2026 Matrix Solutions Pvt. Ltd. All rights reserved.
+        </div>
       </footer>
     </div>
   )
