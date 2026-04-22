@@ -62,6 +62,7 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const [stats, setStats] = useState(null)
   const [orders, setOrders] = useState([])
+  const [monthlyOrders, setMonthlyOrders] = useState(new Array(12).fill(0))
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -92,6 +93,20 @@ const Dashboard = () => {
         })
         
         const ordersArray = Array.isArray(o) ? o : []
+        
+        // Calculate monthly orders for the current year
+        const currentYear = new Date().getFullYear()
+        const mOrders = new Array(12).fill(0)
+        ordersArray.forEach(order => {
+          if (order.createdAt) {
+            const d = new Date(order.createdAt)
+            if (d.getFullYear() === currentYear) {
+              mOrders[d.getMonth()] += 1
+            }
+          }
+        })
+        setMonthlyOrders(mOrders)
+        
         setOrders([...ordersArray].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5))
         setError('')
       })
@@ -177,24 +192,15 @@ const Dashboard = () => {
                 const currentMonth = new Date().getMonth(); // 0-11
                 const isFuture = i > currentMonth;
                 
-                // Mock data logic: only show values for current/past months
-                let v = 0;
-                if (!isFuture) {
-                  const mockVals = [
-                    stats?.deliveredOrders || 12, 
-                    stats?.pendingOrders || 8, 
-                    stats?.totalClients || 15, 
-                    stats?.pendingRequests || 22,
-                    18, 25, 20, 30, 22, 28, 35, 40
-                  ];
-                  v = mockVals[i] || 0;
-                }
+                const v = isFuture ? 0 : monthlyOrders[i];
+                const maxVal = Math.max(...monthlyOrders, 5);
+                const heightPercentage = isFuture ? 0 : v === 0 ? 0 : Math.max(5, (v / maxVal) * 100);
 
                 return (
-                  <div key={label} className="chart-bar-wrapper">
+                  <div key={label} className="chart-bar-wrapper" title={`${v} Orders`}>
                     <motion.div 
                       initial={{ height: 0 }}
-                      animate={{ height: `${Math.min(100, (v || 0) * 4 + 5)}%` }}
+                      animate={{ height: `${heightPercentage}%` }}
                       transition={{ duration: 1, delay: 0.1 * i }}
                       className="chart-bar" 
                     />
