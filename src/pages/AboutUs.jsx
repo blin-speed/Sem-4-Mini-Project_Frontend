@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Target, Eye, ShieldCheck, Zap, Users, TrendingUp, Award, Globe } from 'lucide-react'
+import { ShieldCheck, Zap, Users, TrendingUp, Award, Globe } from 'lucide-react'
 import './Landing.css'
 
 const fadeUp = (delay = 0) => ({
@@ -114,72 +114,34 @@ const AboutUs = () => {
 
       {/* ─── Mission ─── */}
       <section style={{ padding: '7rem 5%', background: '#fff' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+        <div style={{ maxWidth: '860px', margin: '0 auto' }}>
           <motion.div {...fadeUp()}>
             <p style={{ color: '#1a358c', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '1rem' }}>Our Mission</p>
             <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.75rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
               Infrastructure That Powers India's Enterprises
             </h2>
-            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
+            <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.9, marginBottom: '1.25rem' }}>
               To empower corporate and institutional clients with <strong style={{ color: '#0f172a' }}>high-performance IT infrastructure</strong> through a robust portfolio of computing, networking, and security solutions.
             </p>
-            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85 }}>
+            <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.9 }}>
               We leverage over <strong style={{ color: '#0f172a' }}>30 years of operational excellence</strong> to provide seamless technology integration, backed by a dedicated Customer Information Centre and specialised on-site engineering support — maintaining the highest standards of financial credibility while delivering consistent value to every partner and client.
             </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.93 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
-            style={{ position: 'relative' }}
-          >
-            <div style={{ background: 'linear-gradient(145deg, #eef2ff, #e0e7ff)', borderRadius: '28px', height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(26,53,140,0.1)', boxShadow: '0 20px 60px rgba(26,53,140,0.08)' }}>
-              <Target size={130} color="#1a358c" opacity={0.18} strokeWidth={1.2} />
-            </div>
-            {/* Floating badge */}
-            <div style={{ position: 'absolute', bottom: '-20px', left: '2rem', background: '#fff', borderRadius: '14px', padding: '1rem 1.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid rgba(26,53,140,0.12)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: 42, height: 42, background: 'linear-gradient(135deg, #1a358c, #4c6ef5)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck size={22} color="#fff" />
-              </div>
-              <div>
-                <p style={{ fontWeight: 800, fontSize: '1rem', color: '#0f172a', lineHeight: 1 }}>ISO Certified</p>
-                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Internationally recognised standards</p>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
 
       {/* ─── Vision ─── */}
       <section style={{ padding: '7rem 5%', background: '#f8fafc' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.93 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
-            style={{ position: 'relative', order: 1 }}
-          >
-            <div style={{ background: 'linear-gradient(145deg, #f0fdf4, #dcfce7)', borderRadius: '28px', height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(52,211,153,0.2)', boxShadow: '0 20px 60px rgba(52,211,153,0.08)' }}>
-              <Eye size={130} color="#059669" opacity={0.18} strokeWidth={1.2} />
-            </div>
-            {/* Floating badge */}
-            <div style={{ position: 'absolute', bottom: '-20px', right: '2rem', background: '#fff', borderRadius: '14px', padding: '1rem 1.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: '1px solid rgba(52,211,153,0.2)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: 42, height: 42, background: 'linear-gradient(135deg, #059669, #34d399)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Globe size={22} color="#fff" />
-              </div>
-              <div>
-                <p style={{ fontWeight: 800, fontSize: '1rem', color: '#0f172a', lineHeight: 1 }}>Pan-India Reach</p>
-                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Serving clients across every major city</p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div {...fadeUp(0.1)} style={{ order: 2 }}>
+        <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+          <motion.div {...fadeUp()}>
             <p style={{ color: '#059669', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '1rem' }}>Our Vision</p>
             <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.75rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
               India's Most Trusted, Financially Independent IT Partner
             </h2>
-            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
+            <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.9, marginBottom: '1.25rem' }}>
               To be the <strong style={{ color: '#0f172a' }}>most trusted and financially independent IT solutions provider in India</strong>, setting the benchmark for market-leading growth and technical expertise across all domains.
             </p>
-            <p style={{ color: '#475569', fontSize: '1.08rem', lineHeight: 1.85 }}>
+            <p style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.9 }}>
               We aim to evolve alongside the global technology landscape — expanding our influence from core IT distribution to <strong style={{ color: '#0f172a' }}>sophisticated project marketing and image-building consultancy</strong> for world-class brands, while never compromising on the integrity and quality that define us.
             </p>
           </motion.div>
