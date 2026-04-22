@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Bot, FileText, ClipboardList, MessageSquare } from 'lucide-react'
+import { Bot, FileText, ClipboardList } from 'lucide-react'
 import GlobalBackgroundAnimation from '../components/GlobalBackgroundAnimation'
 import { fetchPublicSettings } from '../hooks/useSettings'
 import './AgentAuthIntro.css'
@@ -47,15 +47,7 @@ const ClientRequestsIntro = ({ user }) => {
       border: 'rgba(139,92,246,0.3)',
       action: () => navigate('/client/requests/agent/type'),
     },
-    enabledModes?.has('DIRECT') && {
-      icon: MessageSquare,
-      title: 'Message Us Directly',
-      desc: 'Start a direct conversation with our team. We will reply as soon as possible.',
-      color: '#60a5fa',
-      gradient: 'linear-gradient(135deg, rgba(96,165,250,0.12), transparent)',
-      border: 'rgba(96,165,250,0.25)',
-      action: () => navigate('/client/direct-chat'),
-    },
+
     enabledModes?.has('MANUAL_ONLY') && {
       icon: FileText,
       title: 'Create Manually',

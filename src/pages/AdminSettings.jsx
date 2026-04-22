@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, MessageSquare, FileText, Package, Trash2, Save, AlertTriangle, CheckCircle, Megaphone, Headphones, X, AlertCircle } from 'lucide-react'
+import { Bot, FileText, Package, Trash2, Save, AlertTriangle, CheckCircle, Megaphone, Headphones, X, AlertCircle } from 'lucide-react'
 import { fetchAdminSettings, saveAdminSettings, invalidateSettingsCache } from '../hooks/useSettings'
 import api from '../api/api'
 
@@ -127,7 +127,7 @@ const AdminSettings = () => {
     else next.add(mode)
     setField('requestMode', [...next].join(','))
   }
-  const agentAndDirectBothOn = enabledModes.has('AGENT') && enabledModes.has('DIRECT')
+
 
   const handleSave = async () => {
     setSaving(true)
@@ -218,25 +218,9 @@ const AdminSettings = () => {
         <CheckCard value="AGENT" checked={enabledModes.has('AGENT')} onChange={toggleMode}
           icon={Bot} color="hsl(var(--primary))" title="AI-Assisted (Agent)"
           desc="Clients chat with the AI intake agent to submit sales leads or support tickets. Agent captures structured requirements." />
-        <CheckCard value="DIRECT" checked={enabledModes.has('DIRECT')} onChange={toggleMode}
-          icon={MessageSquare} color="#60a5fa" title="Direct Chat"
-          desc="Clients message your team directly. Admin replies manually in the transcript. Includes seen/unseen indicators." />
         <CheckCard value="MANUAL_ONLY" checked={enabledModes.has('MANUAL_ONLY')} onChange={toggleMode}
           icon={FileText} color="#4ade80" title="Manual Form"
           desc="No chat. Clients fill out a structured form to submit their request." />
-
-        <AnimatePresence>
-          {agentAndDirectBothOn && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ overflow: 'hidden' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', padding: '0.85rem 1rem', borderRadius: '0.5rem', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.3)', marginTop: '0.5rem' }}>
-                <AlertTriangle size={16} color="#fbbf24" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <p style={{ fontSize: '0.8rem', color: '#fbbf24', lineHeight: 1.5 }}>
-                  <strong>Overlap warning:</strong> Both Agent and Direct Chat are enabled. These serve the same purpose differently — clients will see both options and may be confused about which to use. Consider enabling only one.
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </Section>
 
       {/* Agent Persona */}
