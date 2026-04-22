@@ -98,16 +98,16 @@ const FloatingChat = ({ externalOpen, onToggle }) => {
   const detectSupportIntent = (text) => {
     const l = text.toLowerCase()
     return l.includes('support') || l.includes('issue') || l.includes('problem') ||
-           l.includes('broken') || l.includes('not working') || l.includes('error') ||
-           l.includes('ticket') || l.includes('help with my order') || l.includes('fix')
+      l.includes('broken') || l.includes('not working') || l.includes('error') ||
+      l.includes('ticket') || l.includes('help with my order') || l.includes('fix')
   }
 
   const isSummaryText = (text) => {
     if (!text) return false
     return text.includes('Here is a summary of your requirements') ||
-           text.includes('Here is a summary of your Support Request') ||
-           text.includes('Problem Description:') || text.includes('Linked Order ID:') ||
-           (text.includes('Budget:') && text.includes('Timeline:'))
+      text.includes('Here is a summary of your Support Request') ||
+      text.includes('Problem Description:') || text.includes('Linked Order ID:') ||
+      (text.includes('Budget:') && text.includes('Timeline:'))
   }
 
   const handleMarketerSend = async (e) => {
@@ -191,7 +191,7 @@ const FloatingChat = ({ externalOpen, onToggle }) => {
                 <div className="fc-title-wrap">
                   <Bot size={20} style={{ color: 'hsl(var(--primary))' }} />
                   <div>
-                    <h3 className="fc-title">Dishahin</h3>
+                    <h3 className="fc-title">{agentName}</h3>
                     <p className="fc-subtitle">{subtitle}</p>
                   </div>
                 </div>
