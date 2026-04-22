@@ -245,9 +245,14 @@ const AdminSettings = () => {
               Agent Persona / Business Context (Intake Agent)
             </label>
             <p style={{ fontSize: '0.78rem', color: 'hsl(var(--muted-foreground))', marginBottom: '0.5rem', lineHeight: 1.5 }}>
-              Describe what the agent is and what your business does. Injected into the intake agent's system prompt.
-              E.g. "a friendly solutions advisor for Acme Corp, specialising in office furniture and workspace solutions".
+              The <em>role description</em> only — <strong style={{ color: 'hsl(var(--foreground))' }}>do not include the agent name here</strong>.
+              The system prompt is assembled as: <code style={{ background: 'rgba(255,255,255,0.07)', padding: '1px 5px', borderRadius: 4, fontSize: '0.78rem' }}>"You are [Name], [Persona]"</code>.
             </p>
+            {(settings.agentName || settings.agentPersona) && (
+              <p style={{ fontSize: '0.76rem', color: 'hsl(var(--primary))', marginBottom: '0.6rem', fontStyle: 'italic', lineHeight: 1.5 }}>
+                Preview: "You are <strong>{settings.agentName || 'Assistant'}</strong>, {settings.agentPersona || 'a friendly solutions advisor'}."
+              </p>
+            )}
             <textarea
               value={settings.agentPersona || ''}
               onChange={e => setField('agentPersona', e.target.value)}
