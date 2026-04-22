@@ -27,3 +27,8 @@ export const archiveClient = async (clientNo) => {
 export const unarchiveClient = async (clientNo) => {
   return updateClient(clientNo, { accountStatus: 'Active' })
 }
+
+export const deleteClient = async (clientNo) => {
+  const response = await api.delete(`/clients/no/${clientNo}`)
+  return response.data
+}

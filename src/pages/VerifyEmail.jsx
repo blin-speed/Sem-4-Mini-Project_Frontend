@@ -88,6 +88,24 @@ const VerifyEmail = ({ onLogin }) => {
         onLogin(userData)
       }
 
+      // Claim the chat request if applicable
+      if (chatData?.requestId && userData?.clientNo) {
+        try {
+          await fetch((import.meta.env.VITE_API_URL || '') + '/api/agent/claim-request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              requestId:      chatData.requestId,
+              newClientNo:    userData.clientNo,
+              requestType:    chatData.requestType    || 'Lead',
+              linkedOrderId:  chatData.linkedOrderId  || null,
+            }),
+          })
+        } catch {
+          console.warn('claim-request failed — continuing anyway')
+        }
+      }
+
       setTimeout(() => {
         if (chatData) {
           navigate('/client/order-confirm', {

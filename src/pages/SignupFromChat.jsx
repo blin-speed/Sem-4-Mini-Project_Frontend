@@ -78,25 +78,7 @@ const SignupFromChat = ({ onLogin }) => {
         return
       }
 
-      // 2 — Claim the chat request if applicable
-      if (hasChat && userData.clientNo) {
-        try {
-          await fetch((import.meta.env.VITE_API_URL || '') + '/api/agent/claim-request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              requestId:      chatData.requestId,
-              newClientNo:    userData.clientNo,
-              requestType:    chatData.requestType    || 'Lead',  // preserve Support type
-              linkedOrderId:  chatData.linkedOrderId  || null,    // preserve linked order
-            }),
-          })
-        } catch {
-          console.warn('claim-request failed — continuing anyway')
-        }
-      }
-
-      // 3 — Redirect to verification instead of immediate login
+      // 2 — Redirect to verification instead of immediate login
       navigate('/client/verify-email', {
         replace: true,
         state: {

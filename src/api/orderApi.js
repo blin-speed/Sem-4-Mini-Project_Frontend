@@ -22,6 +22,11 @@ export const updateOrderStatus = async (orderId, status) => {
   return response.data
 }
 
+export const deleteOrder = async (orderId) => {
+  const response = await api.delete(`/orders/${orderId}`)
+  return response.data
+}
+
 // Returns a Blob — caller creates an object URL and triggers download
 export const downloadInvoice = async (orderId) => {
   const response = await api.get(`/orders/${orderId}/invoice`, { responseType: 'blob' })

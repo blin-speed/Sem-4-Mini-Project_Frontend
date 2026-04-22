@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Search, ExternalLink, AlertCircle } from 'lucide-react'
-import { getAllOrders, updateOrderStatus } from '../api/orderApi'
+import { Plus, Search, ExternalLink, AlertCircle, Trash2 } from 'lucide-react'
+import { getAllOrders, updateOrderStatus, deleteOrder } from '../api/orderApi'
 import './Orders.css'
 
 const STATUSES = ['Placed', 'Confirmed', 'Processing', 'Ready', 'Shipped', 'Delivered', 'Complete']
@@ -114,6 +114,16 @@ const Orders = () => {
     }
   }
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!window.confirm(`Delete order ${orderId.slice(-8)}? This will permanently remove its associated items and transactions.`)) return
+    try {
+      await deleteOrder(orderId)
+      setOrders(orders.filter(o => o.orderId !== orderId))
+    } catch (e) {
+      alert('Failed to delete order: ' + e.message)
+    }
+  }
+
   return (
     <motion.div className="orders-page" variants={containerVariants} initial="hidden" animate="show">
       <AnimatePresence>
@@ -198,6 +208,12 @@ const Orders = () => {
                           onClick={() => navigate(`/admin/orders/${order.orderId}`)}
                           title="View details">
                           <ExternalLink size={16} />
+                        </button>
+                        <button className="icon-btn"
+                          style={{ color: '#ef4444', marginLeft: '0.5rem' }}
+                          onClick={() => handleDeleteOrder(order.orderId)}
+                          title="Delete Order">
+                          <Trash2 size={16} />
                         </button>
                       </td>
                     </motion.tr>

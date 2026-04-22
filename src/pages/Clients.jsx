@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Mail, Phone, MapPin, UserCheck, ChevronRight, Archive } from 'lucide-react'
-import { getAllClients, archiveClient } from '../api/clientApi'
+import { Search, Mail, Phone, MapPin, UserCheck, ChevronRight, Archive, Trash2 } from 'lucide-react'
+import { getAllClients, archiveClient, deleteClient } from '../api/clientApi'
 import './Clients.css'
 
 const containerVariants = {
@@ -65,6 +65,17 @@ const Clients = () => {
     }
   }
 
+  const handleDelete = async (clientNo) => {
+    if (!window.confirm('CRITICAL WARNING: Delete this client? This will PERMANENTLY ERASE all of their Orders, Requests, and Messages. This action cannot be undone.')) return
+    try {
+      await deleteClient(clientNo)
+      setClients(clients.filter(c => c.clientNo !== clientNo))
+      setFiltered(filtered.filter(c => c.clientNo !== clientNo))
+    } catch (e) {
+      alert('Failed to delete: ' + e.message)
+    }
+  }
+
   return (
     <motion.div className="clients-page" variants={containerVariants} initial="hidden" animate="show">
       <motion.header variants={itemVariants} className="page-header">
@@ -111,6 +122,14 @@ const Clients = () => {
                   onClick={(e) => { e.stopPropagation(); handleArchive(client.clientNo) }}
                 >
                   <Archive size={14} />
+                </button>
+                <button
+                  className="archive-trigger-btn"
+                  title="Delete Operative (Irreversible)"
+                  style={{ color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)', marginLeft: '0.25rem' }}
+                  onClick={(e) => { e.stopPropagation(); handleDelete(client.clientNo) }}
+                >
+                  <Trash2 size={14} />
                 </button>
               </div>
 

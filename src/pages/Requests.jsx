@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Search, Building, Mail, ChevronRight, MessageSquare, PlusCircle } from 'lucide-react'
-import { getAllRequests, getMessages } from '../api/requestApi'
+import { Search, Building, Mail, ChevronRight, MessageSquare, PlusCircle, Trash2 } from 'lucide-react'
+import { getAllRequests, getMessages, deleteRequest } from '../api/requestApi'
 import './Requests.css'
 
 const SUMMARY_MARKER = '[INTAKE_SUMMARY]'
@@ -85,6 +85,16 @@ const Requests = () => {
     if (v === 'active') return 'info'
     if (v === 'closed' || v === 'converted') return 'success'
     return 'pending'
+  }
+
+  const handleDeleteRequest = async (requestId) => {
+    if (!window.confirm(`CRITICAL: Delete request ${requestId.slice(-8)}? This will permanently remove its chat history.`)) return
+    try {
+      await deleteRequest(requestId)
+      setRequests(requests.filter(r => r.requestId !== requestId))
+    } catch (e) {
+      alert('Failed to delete request: ' + e.message)
+    }
   }
 
   return (
@@ -195,6 +205,11 @@ const Requests = () => {
                     <button className="btn btn-primary" style={{ padding: '0.5rem 0.85rem', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                       onClick={() => navigate(`/admin/orders/new?requestId=${req.requestId}`)}>
                       <PlusCircle size={13} /> Create Order
+                    </button>
+                    <button className="btn btn-ghost" style={{ padding: '0.5rem 0.85rem', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid rgba(255,255,255,0.1)', color: '#ef4444' }}
+                      onClick={() => handleDeleteRequest(req.requestId)}
+                      title="Delete Request">
+                      <Trash2 size={13} /> Delete
                     </button>
                   </div>
                 </div>
