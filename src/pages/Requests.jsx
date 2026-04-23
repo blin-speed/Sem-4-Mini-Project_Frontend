@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Search, Building, Mail, ChevronRight, MessageSquare, PlusCircle, Trash2 } from 'lucide-react'
 import { getAllRequests, getMessages, deleteRequest } from '../api/requestApi'
+import { useSettings } from '../hooks/useSettings'
 import './Requests.css'
 
 const SUMMARY_MARKER = '[INTAKE_SUMMARY]'
@@ -52,7 +53,8 @@ const Requests = () => {
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
-  const [typeFilter, setTypeFilter] = useState('Lead') // 'Lead' | 'Support' | 'Direct' | 'Direct'
+  const [typeFilter, setTypeFilter] = useState('Lead') // 'Lead' | 'Support' | 'Direct'
+  const { settings } = useSettings()
 
   useEffect(() => {
     setLoading(true)
@@ -109,17 +111,19 @@ const Requests = () => {
       {/* Filters */}
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', margin: '0 0 2rem 0', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', borderRadius: '0.5rem', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.2)' }}>
-          {['Lead', 'Support', 'Direct'].map((t) => (
+          {['Lead', 'Support', 'Direct']
+            .filter(t => t !== 'Direct' || settings?.requestMode?.includes('MANUAL_ONLY'))
+            .map((t) => (
             <button key={t}
               onClick={() => setTypeFilter(t)}
               style={{
-                width: '120px', padding: '0.6rem 0', fontSize: '0.85rem', fontWeight: 600,
+                width: '140px', padding: '0.6rem 0', fontSize: '0.85rem', fontWeight: 600,
                 textTransform: 'uppercase', letterSpacing: '0.08em', border: 'none', cursor: 'pointer',
                 background: typeFilter === t ? 'hsl(var(--primary))' : 'transparent',
                 color: typeFilter === t ? '#fff' : 'hsl(var(--muted-foreground))',
                 transition: 'all 0.15s',
               }}>
-              {t === 'Lead' ? 'Sales Leads' : t === 'Support' ? 'Support' : 'Direct ChaSupport' ? 'Support' : 'Direct Chat'}
+              {t === 'Lead' ? 'Sales Leads' : t === 'Support' ? 'Support' : 'Direct Requests'}
             </button>
           ))}
         </div>
